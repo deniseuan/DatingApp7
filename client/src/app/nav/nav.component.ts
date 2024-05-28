@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { AccountService } from '../_services/account.service';
-import { Observable, of } from 'rxjs';
-import { User } from '../_modules/user';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -20,17 +18,9 @@ export class NavComponent {
   ngOnInit(): void {
   }
 
-  // getCurrentUser() {
-  //   this.accountService.currentUser$.subscribe({
-  //     next: user => this.loggedIn = !!user,
-  //     error: error => console.log(error)
-  //   })
-  // }
-
   login() {
     this.accountService.login(this.model).subscribe({
-      next: _ => this.router.navigateByUrl('/members'), // _ Instead of ()
-      error: error => this.toastr.error(error.error)
+      next: _ => this.router.navigateByUrl('/members') // _ Instead of ()
     });
   }
 
