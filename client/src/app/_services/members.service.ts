@@ -22,35 +22,35 @@ export class MembersService {
 
   paginatedResult: PaginationResult<Member[]> = new PaginationResult<Member[]>();
 
-  constructor(private http : HttpClient, private accountService : AccountService) {
+  constructor(private http: HttpClient, private accountService: AccountService) {
     this.accountService.currentUser$.pipe(take(1)).subscribe({
       next: user => {
         this.userParams = new UserParams(user!);
         this.user = user!;
       }
     })
-   }
+  }
 
-   getUserParams() {
-      return this.userParams;
-   }
+  getUserParams() {
+    return this.userParams;
+  }
 
-   setUserParams(params: UserParams) {
-      this.userParams = params;
-   }
+  setUserParams(params: UserParams) {
+    this.userParams = params;
+  }
 
-   resetUserParams() {
-    if(this.user) {
+  resetUserParams() {
+    if (this.user) {
       this.userParams = new UserParams(this.user);
       return this.userParams;
     }
     return;
-   }
+  }
 
   getMembers(userParams: UserParams) {
     const response = this.memberCache.get(Object.values(userParams).join('-'));
 
-    if(response) return of(response);
+    if (response) return of(response);
 
     let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
 
@@ -59,7 +59,7 @@ export class MembersService {
     params = params.append('gender', userParams.gender);
     params = params.append('orderBy', userParams.orderBy);
 
-    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users',params).pipe(
+    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http).pipe(
       map(response => {
         this.memberCache.set(Object.values(userParams).join('-'), response);
         return response;
@@ -67,28 +67,26 @@ export class MembersService {
     )
   }
 
-  private getPaginatedResult<T>(url : string, params: HttpParams) {
+  private getPaginatedResult<T>(url: string, params: HttpParams, http: HttpClient) {
     const paginatedResult: PaginationResult<T> = new PaginationResult<T>();
     return this.http.get<T>(url, { observe: 'response', params }).pipe(
       map(response => {
         if (response.body) {
           paginatedResult.result = response.body;
-          const pagination = response.headers.get('Pagination');
-          if (pagination) {
-            paginatedResult.pagination = JSON.parse(pagination);
-          }
-          return paginatedResult;
         }
-        return { result: null, pagination: null };
+        const pagination = response.headers.get('Pagination');
+        if (pagination) {
+          paginatedResult.pagination = JSON.parse(pagination);
+        }
+        return paginatedResult;
       })
     );
   }
 
   private getPaginationHeaders(pageNumber: number, pageSize: number) {
     let params = new HttpParams();
-
-      params = params.append('pageNumber', pageNumber);
-      params = params.append('pageSize', pageSize);
+    params = params.append('pageNumber', pageNumber);
+    params = params.append('pageSize', pageSize);
     return params;
   }
 
@@ -97,25 +95,36 @@ export class MembersService {
       .reduce((arr, elem) => arr.concat(elem.result), [])
       .find((member: Member) => member.userName === username);
 
-      if(member) return of(member);
-    return this.http.get<Member>(this.baseUrl + 'users/' + username );
+    if (member) return of(member);
+    return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
 
   updateMember(member: Member) {
     return this.http.put(this.baseUrl + 'users', member).pipe(
-      map(()=>{
+      map(() => {
         const index = this.members.indexOf(member);
-        this.members[index] = {...this.members[index]}
+        this.members[index] = { ...this.members[index] }
       })
     )
   }
-  
+
   setMainPhoto(photoId: number) {
     return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {});
   }
 
   deletePhoto(photoId: number) {
     return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
+  }
+
+  addLike(username: string) {
+    return this.http.post(this.baseUrl + 'likes/' + username, {});
+  }
+
+  getLikes(predicate: string, pageNumber: number, pageSize: number) {
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+
+    params = params.append('predicate', predicate);
+    return this.getPaginatedResult<Member[]>(this.baseUrl + 'likes', params, this.http);
   }
 
 }
