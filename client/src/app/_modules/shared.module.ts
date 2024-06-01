@@ -9,10 +9,15 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from "ngx-timeago";
+import { ProductCardComponent } from './components/product-card/product-card.component';
+import { RouterModule } from '@angular/router';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ProductCardComponent
+  ],
   imports: [
     CommonModule,
     BsDropdownModule.forRoot(),
@@ -29,7 +34,9 @@ import { TimeagoModule } from "ngx-timeago";
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
     ButtonsModule.forRoot(),
-    TimeagoModule.forRoot()
+    TimeagoModule.forRoot(),
+    RouterModule,
+    ModalModule.forRoot()
 
   ],
   exports: [
@@ -41,7 +48,9 @@ import { TimeagoModule } from "ngx-timeago";
     BsDatepickerModule,
     PaginationModule,
     ButtonsModule,
-    TimeagoModule
+    TimeagoModule,
+    ProductCardComponent,
+    ModalModule
 
   ]
 })

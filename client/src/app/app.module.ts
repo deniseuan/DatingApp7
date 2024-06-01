@@ -10,7 +10,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
-import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { SharedModule } from './_modules/shared.module';
@@ -25,6 +24,16 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { TextInputsComponent } from './_forms/text-inputs/text-inputs.component';
 import { DatePickerComponent } from './_forms/date-picker/date-picker.component';
+import { ProductCatalogComponent } from './products/product-catalog.component';
+import { ProductDetailComponent } from './products/product-detail.component';
+import { ProductEditComponent } from './products/product-edit.component';
+import { ProductCreateComponent } from './products/product-create.component';
+import { ProductsComponent } from './products/products.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { HasRoleDirective } from './_directive/has-role.directive';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +51,17 @@ import { DatePickerComponent } from './_forms/date-picker/date-picker.component'
     MemberEditComponent,
     PhotoEditorComponent,
     TextInputsComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    ProductCatalogComponent,
+    ProductDetailComponent,
+    ProductEditComponent,
+    ProductCreateComponent,
+    ProductsComponent,
+    AdminPanelComponent,
+    HasRoleDirective,
+    UserManagementComponent,
+    PhotoManagementComponent,
+    RolesModalComponent,
   ],
   imports: [
     BrowserModule,

@@ -5,7 +5,11 @@
   "projects": {
     "client": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:service": {
+          "skipTests": false
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",

@@ -11,6 +11,14 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { preventsUnsavedChangesGuard } from './_guards/prevents-unsaved-changes.guard';
+import { memberDetailedResolver } from './_resolvers/member-detailed.resolver';
+import { ProductsComponent } from './products/products.component';
+import { ProductDetailComponent } from './products/product-detail.component';
+import { ProductEditComponent } from './products/product-edit.component';
+import { ProductCatalogComponent } from './products/product-catalog.component';
+import { ProductCreateComponent } from './products/product-create.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { adminGuard } from './_guards/admin.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,10 +28,15 @@ const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'members', component: MemberListComponent, canActivate: [authGuard] },
-      { path: 'members/:username', component: MemberDetailComponent },
+      { path: 'members/:username', component: MemberDetailComponent, resolve: { member: memberDetailedResolver }},
       { path: 'member/edit', component: MemberEditComponent, canDeactivate:  [preventsUnsavedChangesGuard]},
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessagesComponent },
+      { path: 'admin', component: AdminPanelComponent, canActivate: [adminGuard]},
+      { path: 'products', component: ProductCatalogComponent },
+      { path: 'products/:id', component: ProductDetailComponent },
+      { path: 'products/:id/edit', component: ProductEditComponent },
+      { path: 'products/create', component: ProductCreateComponent },
     ]
   },
   { path: 'errors', component: TestErrorComponent },
