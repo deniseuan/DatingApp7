@@ -26,11 +26,15 @@ namespace API.Helpers
                 .ForMember(dest => dest.PhotoUrl,
                     opt => opt.MapFrom(src => src.ProductPhotos.FirstOrDefault().Photo.Url))
                 .ForMember(dest => dest.Brand, opt => opt.MapFrom(src => src.ProductBrand.Brand));
+            CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
+            CreateMap<DateTime?, DateTime?>().ConvertUsing(d => d.HasValue ? 
+                DateTime.SpecifyKind(d.Value, DateTimeKind.Utc) : null);
 
             CreateMap<Brand, BrandDto>();
 
             CreateMap<ProductCreateDto, Product>();
             CreateMap<ProductUpdateDto, Product>();
+
         }
     }
 }
