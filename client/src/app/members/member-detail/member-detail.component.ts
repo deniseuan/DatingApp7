@@ -48,7 +48,6 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.route.data.subscribe({
       next: data => {
         this.member = data['member']
-        console.log(this.member);
       }
     })
 

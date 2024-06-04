@@ -1,4 +1,5 @@
 using API.Extensions;
+using API.Interfaces;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace API.Helpers
@@ -14,10 +15,10 @@ namespace API.Helpers
 
             var userId = resultContext.HttpContext.User.GetUserId();
 
-            var repo = resultContext.HttpContext.RequestServices.GetService<IUserRepository>();
-            var user = await repo.GetUserByIdAsync(userId);
+            var uow = resultContext.HttpContext.RequestServices.GetService<IUnitOfWork>();
+            var user = await uow.UserRepository.GetUserByIdAsync(userId);
             user.LastActive = DateTime.UtcNow;
-            await repo.SaveAllAsync();
+            await uow.Complete();
         }
     }
 }

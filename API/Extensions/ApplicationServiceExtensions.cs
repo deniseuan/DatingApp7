@@ -27,13 +27,11 @@ namespace API.Extensions
             services.AddSignalR();
             services.AddSingleton<PresenceTracker>();
 
-            // Repository services
-            services.AddScoped<IUserRepository, UserRespository>();
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IMessageRepository, MessageRepository>();
-            services.AddScoped<ILikesRepository, LikesRespository>();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            // Repository services
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             // settings
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             
